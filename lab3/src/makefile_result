@@ -1,0 +1,20 @@
+Объяснение целей в Makefile
+CC=gcc:
+Определяет компилятор, который будет использоваться для сборки (в данном случае это GCC).
+CFLAGS=-I.:
+Определяет дополнительные флаги для компилятора. Флаг -I. указывает компилятору искать заголовочные файлы в текущей директории.
+sequential_min_max : utils.o find_min_max.o utils.h find_min_max.h:
+Это цель, которая указывает, как собрать исполняемый файл sequential_min_max. Она зависит от объектов utils.o и find_min_max.o, а также заголовочных файлов utils.h и find_min_max.h.
+Команда: $(CC) -o sequential_min_max find_min_max.o utils.o sequential_min_max.c $(CFLAGS) собирает исполняемый файл из объектных файлов и исходного кода.
+parallel_min_max : utils.o find_min_max.o utils.h find_min_max.h:
+Аналогично предыдущей цели, но для сборки исполняемого файла parallel_min_max.
+Команда: $(CC) -o parallel_min_max utils.o find_min_max.o parallel_min_max.c $(CFLAGS).
+utils.o : utils.h:
+Эта цель определяет, как создать объектный файл utils.o. Она зависит от заголовочного файла utils.h.
+Команда: $(CC) -o utils.o -c utils.c $(CFLAGS) компилирует utils.c в объектный файл.
+find_min_max.o : utils.h find_min_max.h:
+Эта цель описывает, как собрать объектный файл find_min_max.o. Он зависит от заголовочных файлов utils.h и find_min_max.h.
+Команда: $(CC) -o find_min_max.o -c find_min_max.c $(CFLAGS) компилирует find_min_max.c в объектный файл.
+clean ::
+Эта цель используется для очистки рабочей директории. Она удаляет все объектные файлы и исполняемые файлы, чтобы подготовить проект к новой сборке.
+Команда: rm utils.o find_min_max.o sequential_min_max parallel_min_max.
